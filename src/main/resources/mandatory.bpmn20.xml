@@ -12,7 +12,7 @@
 
 		<sequenceFlow id="sequenceflow2" name="To User Task" sourceRef="createCase" targetRef="userTask1"/>
 
-		<userTask id="userTask1" name="User Task" activiti:class="org.activitiscratchpad.CreateCaseTask">
+		<userTask id="userTask1" name="User Task" activiti:class="org.activitiscratchpad.UserCaseTask">
 			<extensionElements>
 				<activiti:taskListener class="org.activitiscratchpad.CreateEvent" event="create" />
 				<activiti:taskListener class="org.activitiscratchpad.CompleteEvent" event="complete" />
