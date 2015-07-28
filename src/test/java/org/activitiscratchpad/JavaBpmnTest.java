@@ -1,9 +1,11 @@
 package org.activitiscratchpad;
 
 import org.activiti.engine.RuntimeService;
+import org.activiti.engine.TaskService;
 import org.activiti.engine.impl.ProcessEngineImpl;
 import org.activiti.engine.impl.jobexecutor.JobExecutor;
 import org.activiti.engine.runtime.ProcessInstance;
+import org.activiti.engine.task.Task;
 import org.activiti.engine.test.ActivitiRule;
 import org.activiti.engine.test.Deployment;
 import org.junit.Rule;
@@ -73,6 +75,19 @@ public class JavaBpmnTest extends AbstractTest {
 		Date validatetime = (Date) runtimeService.getVariable(processInstance.getId(), "validatetime");
 		assertNotNull(validatetime);
 		System.out.println("validatetime is " + validatetime);
+	}
+
+	@Test
+	@Deployment(resources={"mandatory.bpmn20.xml"})
+	public void executeMandatory() {
+		RuntimeService runtimeService = activitiRule.getRuntimeService();
+		ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("mandatory");
+
+		TaskService taskService = activitiRule.getTaskService();
+		Task task = taskService.createTaskQuery().singleResult();
+		taskService.complete(task.getId());
+
+
 	}
 	
 	private boolean waitForJobExecutorToProcessAllJobs(long maxMillisToWait, long intervalMillis) {

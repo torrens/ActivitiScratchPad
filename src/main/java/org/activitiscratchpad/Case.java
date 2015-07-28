@@ -1,0 +1,38 @@
+package org.activitiscratchpad;
+
+import java.io.Serializable;
+
+/**
+ * Created by mark on 28/07/15.
+ */
+public class Case implements Serializable {
+
+    private String id;
+    private String owner;
+    private String notes;
+
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getOwner() {
+        return owner;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+}

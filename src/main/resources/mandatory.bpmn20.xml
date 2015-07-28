@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" 
+		targetNamespace="http://www.bpmnwithactiviti.org"
+		xmlns:activiti="http://activiti.org/bpmn">
+		
+	<process id="mandatory" name="mandatory">
+		<startEvent id="start" name="Start"/>
+
+		<sequenceFlow id="sequenceflow1" name="Create Case" sourceRef="start" targetRef="createCase"/>
+
+		<serviceTask id="createCase" name="Create Case" activiti:class="org.activitiscratchpad.CreateCaseTask"/>
+
+		<sequenceFlow id="sequenceflow2" name="To User Task" sourceRef="createCase" targetRef="userTask1"/>
+
+		<userTask id="userTask1" name="User Task" activiti:class="org.activitiscratchpad.CreateCaseTask">
+			<extensionElements>
+				<activiti:taskListener class="org.activitiscratchpad.CreateEvent" event="create" />
+				<activiti:taskListener class="org.activitiscratchpad.CompleteEvent" event="complete" />
+			</extensionElements>
+		</userTask>
+
+		<sequenceFlow id="sequenceflow3" name="To End" sourceRef="userTask1" targetRef="end"/>
+
+		<endEvent id="end" name="End"/>
+
+
+	</process>
+</definitions>

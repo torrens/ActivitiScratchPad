@@ -1,3 +1,7 @@
 target
 .idea
 ActivitiScratchPad.iml
+.settings
+.xml
+.classpath
+.project

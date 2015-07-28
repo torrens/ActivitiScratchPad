@@ -6,8 +6,7 @@ import org.activiti.engine.delegate.JavaDelegate;
 import java.util.Date;
 
 public class LongValidateService implements JavaDelegate {
-	
-	@Override
+
 	public void execute(DelegateExecution execution) throws Exception {
 		Long isbn = (Long) execution.getVariable("isbn");
 		System.out.println("received isbn " + isbn + " and going to sleep");
