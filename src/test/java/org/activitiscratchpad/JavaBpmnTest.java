@@ -85,6 +85,7 @@ public class JavaBpmnTest extends AbstractTest {
 
 		TaskService taskService = activitiRule.getTaskService();
 		Task task = taskService.createTaskQuery().singleResult();
+		taskService.saveTask(task);
 		taskService.complete(task.getId());
 
 
