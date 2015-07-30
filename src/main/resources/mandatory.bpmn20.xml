@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" 
 		targetNamespace="http://www.bpmnwithactiviti.org"
-		xmlns:activiti="http://activiti.org/bpmn">
+		xmlns:activiti="http://activiti.org/bpmn"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 		
 	<process id="mandatory" name="mandatory">
 		<startEvent id="start" name="Start"/>
@@ -12,14 +13,38 @@
 
 		<sequenceFlow id="sequenceflow2" name="To User Task" sourceRef="createCase" targetRef="userTask1"/>
 
-		<userTask id="userTask1" name="User Task" activiti:class="org.activitiscratchpad.CreateCaseTask">
+		<userTask id="userTask1" name="User Task" activiti:class="org.activitiscratchpad.UserCaseTask">
 			<extensionElements>
+                <activiti:formProperty id="continue" name="Can I continue?" required="true" type="enum" expression="${continue}"/>
 				<activiti:taskListener class="org.activitiscratchpad.CreateEvent" event="create" />
-				<activiti:taskListener class="org.activitiscratchpad.CompleteEvent" event="complete" />
+				<activiti:taskListener class="org.activitiscratchpad.CompleteEvent" event="complete"/>
 			</extensionElements>
 		</userTask>
 
-		<sequenceFlow id="sequenceflow3" name="To End" sourceRef="userTask1" targetRef="end"/>
+        <sequenceFlow sourceRef="userTask1" targetRef="continueJS" />
+        <scriptTask id="continueJS" scriptFormat="groovy">
+            <script>
+                number = Math.floor((Math.random() * 10) + 1);
+
+                out:println "number = " + number;
+
+                execution.setVariable("continue", false);
+
+                if (number == 5) {
+                    execution.setVariable("continue", true);
+                }
+
+                out:println "continue = " + execution.getVariable("continue");
+            </script>
+        </scriptTask>
+        <sequenceFlow id="sequenceflow3" name="sf3" sourceRef="continueJS" targetRef="exclusivegateway1"/>
+        <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
+		<sequenceFlow id="sequenceflow4" name="To End" sourceRef="exclusivegateway1" targetRef="end">
+            <conditionExpression xsi:type="tFormalExpression">${continue == true}</conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow id="sequenceflow5" name="To End" sourceRef="exclusivegateway1" targetRef="start">
+            <conditionExpression xsi:type="tFormalExpression">${continue == false}</conditionExpression>
+        </sequenceFlow>
 
 		<endEvent id="end" name="End"/>
 

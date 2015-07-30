@@ -89,6 +89,13 @@ public class JavaBpmnTest extends AbstractTest {
 
 
 	}
+
+    @Test
+    @Deployment(resources={"testWorkflow.bpmn20.xml"})
+    public void executeWorkflowTest() {
+        RuntimeService runtimeService = activitiRule.getRuntimeService();
+        ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("workflowTest");
+    }
 	
 	private boolean waitForJobExecutorToProcessAllJobs(long maxMillisToWait, long intervalMillis) {
       Timer timer = new Timer();
